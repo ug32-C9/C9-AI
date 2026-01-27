@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C9-AI Assistant</title>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><span>C9</span></div>
+                <h1>C9-AI</h1>
+            </div>
+
+            <div id="model-list" class="sidebar-content">
+                <div class="model-group">
+                    <!-- <h3>Qwen3</h3> -->
+                    <button class="model-btn" data-mode="coding">C9-Coding</button>
+                    <button class="model-btn active" data-mode="reasoning">C9-Reasoning</button>
+                    <button class="model-btn" data-mode="research">C9-Research</button>
+                </div>
+
+                <div class="model-group">
+                    <h3>External</h3>
+                    <button class="model-btn deep" data-mode="deep-research">
+                        Deep Research (Gemini)
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <p>&copy; 2026 KohSec-Team</p>
+                <!-- <p>C9-AI Assistant</p> -->
+            </div>
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+        <main id="main-content">
+
+            <!-- Chat -->
+            <div id="chat-view"></div>
+
+            <!-- Input -->
+            <div id="input-container">
+                <div class="input-wrapper">
+
+                    <textarea id="chat-input" placeholder="Ask C9 anything…" rows="1"></textarea>
+
+                    <button id="send-btn" class="icon-btn primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                    </button>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
