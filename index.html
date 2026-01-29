@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C9-AI | KohSec-Team</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">C9</div>
+        <h1>C9-AI</h1>
+      </div>
+
+      <div id="model-list">
+        <div class="model-group">
+          <h3>KohSec Models</h3>
+          <button class="model-btn active" data-mode="reasoning">🧠 Reasoning</button>
+          <button class="model-btn" data-mode="coding">💻 Coding</button>
+          <button class="model-btn" data-mode="research">🔍 Research</button>
+        </div>
+      </div>
+
+      <footer class="sidebar-footer">
+        <p>© 2026 KohSec-Team</p>
+      </footer>
+    </aside>
+
+    <!-- Main Chat -->
+    <main id="main-content">
+      <div id="chat-view"></div>
+      <div id="input-container">
+        <div class="input-wrapper">
+          <textarea id="chat-input" placeholder="Ask C9-AI..." rows="1"></textarea>
+          <button id="send-btn">Send</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
