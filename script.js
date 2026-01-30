@@ -1,4 +1,4 @@
-const API_URL = "https://kohsec-team-c9-ai.hf.space/v1/chat/completions"; // ← No trailing space
+const API_URL = "https://animated-goldfish-jjjgvjvv4vp5hj766-8000.app.github.dev/v1/chat/completions"; // ← No trailing space
 
 let currentMode = "reasoning";
 
