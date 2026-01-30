@@ -1,4 +1,4 @@
-const API_URL = "https://test-vps-7860.app.github.dev"; // ← No trailing space
+const API_URL = "https://test-vps-7860.app.github.dev/v1/chat/completions"; // ← No trailing space
 
 let currentMode = "reasoning";
 
