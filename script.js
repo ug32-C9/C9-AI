@@ -1,8 +1,7 @@
-const API_URL = "https://kohsec-team-c9-ai-7b-instruct.hf.space/v1/chat/completions";
+const API_URL = "https://kohsec-team-c9-ai-7b-instruct.hf.space/v1/chat/completions"; // ← No trailing space
 
 let currentMode = "reasoning";
 
-// Model selection
 document.querySelectorAll(".model-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".model-btn").forEach(b => b.classList.remove("active"));
@@ -11,56 +10,61 @@ document.querySelectorAll(".model-btn").forEach(btn => {
     });
 });
 
-// DOM elements
 const chatView = document.getElementById("chat-view");
 const chatInput = document.getElementById("chat-input");
 const sendBtn = document.getElementById("send-btn");
 
-// Add message to chat
-function addMessage(role, text, isStreaming = false) {
+function addMessage(role, text) {
     const div = document.createElement("div");
     div.className = `message ${role}`;
-    div.innerHTML = `<div class="bubble">${isStreaming ? text : marked.parse(text)}</div>`;
+    div.innerHTML = `<div class="bubble">${marked.parse(text)}</div>`;
     chatView.appendChild(div);
     chatView.scrollTop = chatView.scrollHeight;
-    return div;
 }
 
-// Send message
+// Retry logic for HF sleep
+async function callC9API(messages) {
+    for (let i = 0; i < 3; i++) {
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages,
+                    max_tokens: 512,
+                    temperature: 0.7
+                })
+            });
+            if (res.ok) return await res.json();
+            if (res.status === 503 && i < 2) {
+                await new Promise(r => setTimeout(r, 8000)); // Wait 8 sec
+                continue;
+            }
+            throw new Error(`HTTP ${res.status}`);
+        } catch (e) {
+            if (i === 2) throw e;
+            await new Promise(r => setTimeout(r, 5000));
+        }
+    }
+}
+
 async function sendMessage() {
     const msg = chatInput.value.trim();
     if (!msg) return;
 
     chatInput.value = "";
-    const userMsg = addMessage("user", msg);
-
-    // Loading indicator
-    const aiMsg = addMessage("ai", "⏳ Thinking...", true);
+    addMessage("user", msg);
+    const aiId = addMessage("ai", "⏳ Thinking...");
 
     try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                messages: [{ role: "user", content: msg }],
-                max_tokens: 1024,
-                temperature: 0.7
-            })
-        });
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const data = await response.json();
+        const data = await callC9API([{ role: "user", content: msg }]);
         const reply = data.choices[0].message.content || "No response.";
-
-        // Replace loading with real response
-        aiMsg.querySelector(".bubble").innerHTML = marked.parse(reply);
+        aiId.querySelector(".bubble").innerHTML = marked.parse(reply);
     } catch (err) {
-        aiMsg.querySelector(".bubble").textContent = `⚠️ Error: ${err.message}`;
+        aiId.querySelector(".bubble").textContent = `⚠️ ${err.message}`;
     }
 }
 
-// Event listeners
 sendBtn.addEventListener("click", sendMessage);
 chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -69,7 +73,6 @@ chatInput.addEventListener("keypress", (e) => {
     }
 });
 
-// Auto-resize textarea
 chatInput.addEventListener("input", () => {
     chatInput.style.height = "auto";
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + "px";
